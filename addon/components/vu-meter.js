@@ -96,21 +96,23 @@ export default Ember.Component.extend({
   //has effects on channel count and class names for channel
   channelNames: ['left', 'right'],
 
-  //values for normalization
+  //opts for normalization
   min: 0,
   max: 1,
 
+  //smoothing options
   proxyDelay: 65,
   proxyFallDuration: 200,
 
-  _values: [],
-
+  //levels
   red: 0.85,
   yellow: 0.65,
+
   peak: true,
   peakWidth: 2, //in px
 
-  builtChannelOptions: null,
+  _values: [],
+  _builtChannelOptions: null,
 
   values: Ember.computed({
     get: function(){
@@ -129,8 +131,17 @@ export default Ember.Component.extend({
     this.renderChannels();
   },
 
+  rebuildAndRender: function(){
+    this.buildOptions();
+    this.renderChannels();
+  },
+
+  updateObserver: Ember.observer('channelNames', 'min', 'max', 'proxyDelay', 'proxyFallDuration', 'red', 'yellow', 'peak', 'peakWidth', function(){
+    Ember.run.once(this, this.rebuildAndRender);
+  }),
+
   renderChannels: function(values){
-    var opts = this.get('builtChannelOptions');
+    var opts = this.get('_builtChannelOptions');
     if (!values) {
         values = this.get('_values');
     }
@@ -194,14 +205,15 @@ export default Ember.Component.extend({
         channelOpts.dom.yellow.style.left = formatValue(channelOpts.thresholds.yellow, channelOpts);
         channelOpts.dom.red.style.left = formatValue(channelOpts.thresholds.red, channelOpts);
         if (channelOpts.peak.enabled) {
-            channelOpts.dom.peak.style.width = channelOpts.peak.width + 'px';
+            channelOpts.dom.peak.style.width = channelOpts.peak.width + 'px';            
+            channelOpts.dom.peak.style.display = '';
             channelOpts.proxy.peak = new Peak(); //with defaults
         }else{
-            channelOpts.dom.peak.style.display = 'none';
+            channelOpts.dom.peak.style.display = 'none';            
         }
         optionsArray.push(channelOpts);
     });
 
-    this.set('builtChannelOptions', optionsArray);
+    this.set('_builtChannelOptions', optionsArray);
   }
 });

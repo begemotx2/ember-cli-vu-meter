@@ -1,0 +1,1 @@
+export { default } from 'ember-cli-vu-meter/components/vu-meter';

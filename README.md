@@ -1,9 +1,9 @@
 # Ember-cli-vu-meter
 
-Pretty fast VU meter for ember.
+Pretty fast VU meter as ember addon.
 
 ## Demo
-Demo at [http://begemotx2.github.io/ember-cli-vu-meter/](http://begemotx2.github.io/ember-cli-vu-meter/).
+Demo at [http://begemotx2.github.io/ember-cli-vu-meter/](http://begemotx2.github.io/ember-cli-vu-meter/)
 
 ## Installation
 

@@ -37,7 +37,7 @@
     "ember-try": "0.0.6"
   },
   "keywords": [
-    "ember-addon", "vu meter", "vu-meter", "volume", "levels", "meter"
+    "ember-addon",  "ember", "vu meter", "vu-meter", "volume", "levels", "meter", "peaks"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.3",

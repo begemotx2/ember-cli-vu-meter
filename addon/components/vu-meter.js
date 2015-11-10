@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import layout from '../templates/components/vu-meter';
 
+/*global
+$
+*/
 
 function normalize(opts, value){
     if (value > opts.max) {
@@ -18,9 +21,9 @@ var Peak = function(delay, fallDuration){
     this.lastTime = 0;        
     this.falling = null;
 
-    if (typeof fallDuration == 'undefined') {
+    if (typeof fallDuration === 'undefined') {
         fallDuration = 200;
-        if (typeof delay == 'undefined') {
+        if (typeof delay === 'undefined') {
             delay = 1000;
         }
     }
@@ -34,19 +37,19 @@ Peak.prototype.update = function(value){
         this.value = value;
         this.lastTime = now;
         this.falling = null;
-    }else if (now > this.lastTime + this.delay){
+    }else if (now > this.lastTime + this.delay) {
         if (this.falling === null){ //start falling, determine speed
             this.falling = {
                 startTime: now,
                 from: this.value,
                 to: value
-            }
+            };
         }
         var fallRatio = Math.min(1, (now - this.falling.startTime) / this.fallDuration);
         this.value = this.falling.from - (this.falling.from - this.falling.to) * fallRatio;
     }
     return this.value;    
-}
+};
 
 
 //width of position value
@@ -87,7 +90,7 @@ function drawChannel(opts, value){
 
 
 export default Ember.Component.extend({
-  //layout: layout,
+  layout: layout,
   classNames: ['vu-meter'],
 
   //has effects on channel count and class names for channel
@@ -142,7 +145,7 @@ export default Ember.Component.extend({
                 value = {
                     value: value, 
                     peak: opt.proxy.peak.update(value)
-                }
+                };
             }
             drawChannel(opt, value);
         }   
@@ -191,7 +194,7 @@ export default Ember.Component.extend({
         channelOpts.dom.yellow.style.left = formatValue(channelOpts.thresholds.yellow, channelOpts);
         channelOpts.dom.red.style.left = formatValue(channelOpts.thresholds.red, channelOpts);
         if (channelOpts.peak.enabled) {
-            channelOpts.dom.peak.style.width = channelOpts.peak.width + 'px'
+            channelOpts.dom.peak.style.width = channelOpts.peak.width + 'px';
             channelOpts.proxy.peak = new Peak(); //with defaults
         }else{
             channelOpts.dom.peak.style.display = 'none';
